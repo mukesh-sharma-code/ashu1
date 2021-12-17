@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/assets/template/vendors/typicons/typicons.css">
     <link rel="stylesheet" href="/assets/template/vendors/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="/assets/template/vendors/css/vendor.bundle.base.css">
+    
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <!-- End plugin css for this page -->
