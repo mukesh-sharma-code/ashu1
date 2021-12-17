@@ -21,7 +21,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="/assets/template/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="images/favicon.png" />
+  <link rel="shortcut icon" href="/assets/template/images/favicon.png" />
 </head>
 <body>
   <div class="container-scroller">
