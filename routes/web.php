@@ -14,8 +14,8 @@ use App\Http\Controllers\UserController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::view('/',"users");
+Route::get('/', function () {
+    return view('index');
+});
+Route::view('/manageData',"users");
 Route::get('/getTableData',[UserController::class,'getTableData'])->name('getTableData');

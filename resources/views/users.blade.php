@@ -77,10 +77,10 @@
                     </button>
                 </div>
                 <div>
-                    <a class="navbar-brand brand-logo" href="index.html">
+                    <a class="navbar-brand brand-logo" href="/">
                         <img src="/assets/template/images/logo.svg" alt="logo" />
                     </a>
-                    <a class="navbar-brand brand-logo-mini" href="index.html">
+                    <a class="navbar-brand brand-logo-mini" href="/">
                         <img src="/assets/template/images/logo-mini.svg" alt="logo" />
                     </a>
                 </div>
@@ -88,7 +88,7 @@
             <div class="navbar-menu-wrapper d-flex align-items-top">
                 <ul class="navbar-nav">
                     <li class="nav-item font-weight-semibold d-none d-lg-block ms-0">
-                        <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">John Doe</span></h1>
+                        <h1 class="welcome-text">Good Morning, <span class="text-black fw-bold">Client</span></h1>
                         <h3 class="welcome-sub-text">Your performance summary this week </h3>
                     </li>
                 </ul>
@@ -217,7 +217,7 @@
                         </a>
                         <div class="collapse" id="ui-basic">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link" href="/manageUsers">Users</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/manageData">Manage Data</a></li>
                             </ul>
                         </div>
                     </li>
