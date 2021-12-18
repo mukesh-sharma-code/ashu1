@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="/assets/template/vendors/typicons/typicons.css">
     <link rel="stylesheet" href="/assets/template/vendors/simple-line-icons/css/simple-line-icons.css">
     <link rel="stylesheet" href="/assets/template/vendors/css/vendor.bundle.base.css">
-    
+
     <!-- endinject -->
     <!-- Plugin css for this page -->
     <!-- End plugin css for this page -->
@@ -27,15 +27,91 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <style>
+        table.dataTable tbody th,
+        table.dataTable tbody td {
+            white-space: nowrap;
+        }
+
+        /* thead input {
+        width: 100%;
+        } */
+
+        #DataTables_Table_0_wrapper .row:nth-child(2) {
+            overflow: auto;
+            min-height: 70vh
+        }
+        
+
+        
+    </style>
     <script type="text/javascript">
         $(document).ready(function() {
             // prepare the data
+            $('.yajra-datatable thead tr')
+                .clone(true)
+                .addClass('filters')
+                .appendTo('.yajra-datatable thead');
+
+
             $(function() {
                 var table = $('.yajra-datatable').DataTable({
                     processing: true,
-                    serverSide: true,
+                    // serverSide: true,
                     searching: true,
-                    "scrollX": true,
+                    // "scrollX": true,
+
+                    // "scrollCollapse": false,
+                    orderCellsTop: true,
+                    fixedHeader: true,
+                    bAutoWidth: false, 
+                    initComplete: function() {
+                        var api = this.api();
+
+                        // For each column
+                        api
+                            .columns()
+                            .eq(0)
+                            .each(function(colIdx) {
+                                // Set the header cell to contain the input element
+                                var cell = $('.filters th').eq(
+                                    $(api.column(colIdx).header()).index()
+                                );
+                                var title = $(cell).text();
+                                $(cell).html('<input type="text" placeholder="' + title + '" />');
+
+                                // On every keypress in this input
+                                $(
+                                        'input',
+                                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                                    )
+                                    .off('keyup change')
+                                    .on('keyup change', function(e) {
+                                        e.stopPropagation();
+
+                                        // Get the search value
+                                        $(this).attr('title', $(this).val());
+                                        var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                                        var cursorPosition = this.selectionStart;
+                                        // Search the column for that value
+                                        api
+                                            .column(colIdx)
+                                            .search(
+                                                this.value != '' ?
+                                                regexr.replace('{search}', '(((' + this.value + ')))') :
+                                                '',
+                                                this.value != '',
+                                                this.value == ''
+                                            )
+                                            .draw();
+
+                                        $(this)
+                                            .focus()[0]
+                                            .setSelectionRange(cursorPosition, cursorPosition);
+                                    });
+                            });
+                    },
                     ajax: "{{ route('getTableData') }}",
                     columns: [
                         // {data: 'id', name: 'id'},
@@ -230,24 +306,24 @@
                         <tr>
                             <th>Source</th>
                             <th>Subject</th>
-                            <th>	OrderDate</th>
+                            <th> OrderDate</th>
                             <th>Price</th>
-                            <th>	Earning</th>
+                            <th> Earning</th>
                             <th>Email</th>
-                            <th>	Item</th>
+                            <th> Item</th>
                             <th>Claim</th>
                             <th>Name</th>
-                            <th>	OrderID</th>
-                            <th>	To</th>
+                            <th> OrderID</th>
+                            <th> To</th>
                             <th>Decision</th>
                             <th>Granted/Denied</th>
-                            <th>	Date</th>
+                            <th> Date</th>
                             <th>Subtotal</th>
                             <th>Discount</th>
                             <th>GiftCard</th>
                             <th>Refund_Value</th>
                             <th>Total_Refund</th>
-                            
+
                         </tr>
                     </thead>
                     <tbody>

@@ -29,15 +29,7 @@ class UserController extends Controller
                //  }
                 return DataTables::of($data)
                     ->addIndexColumn()
-                    ->addColumn('action', function($row){
-                        $actionBtn = '';
-                        return $actionBtn;
-                    })
-                    ->addColumn('viewDetail', function($row){
-                        $viewBtn = '';
-                        return $viewBtn;
-                    })
-                    ->rawColumns(['action','viewDetail'])
+                    
                     ->make(true);
             }
         }catch(Exception $e){
