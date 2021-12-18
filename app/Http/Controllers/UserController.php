@@ -19,7 +19,29 @@ class UserController extends Controller
     {
         try{
             if ($request->ajax()) {
-                $data = staging_table::all();
+                $fromDate = null;
+                $toDate = null;
+                if($request->fromDate != null){
+                    $str = strtotime($request->fromDate);
+                    $fromDate = date('m/d/Y',$str);
+                }
+                if($request->toDate != null){
+                    $str = strtotime($request->toDate);
+                    $toDate = date('m/d/Y',$str);
+                }
+                $query = staging_table::select('*');
+                if($fromDate != null && $toDate != null){
+                    $query->whereBetween('date',array($fromDate,$toDate));
+                }else{
+                    if($fromDate != null){
+                        $query->where('date','=',$fromDate);    
+                    }
+                    if($toDate != null){
+                        $query->where('date','=',$toDate);    
+                    }
+                }
+                $data = $query->get();
+
                 
                //  $finalData = []; 
                //  foreach($data as $obj){
