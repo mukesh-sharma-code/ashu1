@@ -42,10 +42,10 @@
             min-height: 70vh
         }
         
-        *::-webkit-scrollbar {
-            width: 8px;
+        /* *::-webkit-scrollbar {
+            width: 20px;
         }
-        
+         */
         #from_date,#to_date,button{
             height:30px
         }
