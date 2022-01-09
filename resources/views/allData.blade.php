@@ -58,6 +58,9 @@
         white-space: break-spaces !important;
         line-height: 16px !important;
     }
+    #indexPageDateRangeDivUl{
+        display: none !important;
+    }
 </style>
 <!-- partial:partials/_navbar.html -->
 <!-- partial -->

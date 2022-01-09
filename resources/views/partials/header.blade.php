@@ -29,7 +29,7 @@
             </li>
         </ul>
         
-        <ul class="navbar-nav ms-auto">
+        <ul class="navbar-nav ms-auto" id="indexPageDateRangeDivUl">
             <li class="nav-item d-none d-lg-block">
                 <!-- <div id="datepicker-popup" class="input-group date datepicker navbar-date-picker">
                     <span class="input-group-addon input-group-prepend border-right">
