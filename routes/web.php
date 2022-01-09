@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +14,10 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-Route::view('/manageData',"users");
-Route::get('/getTableData',[UserController::class,'getTableData'])->name('getTableData');
+Route::view('/', 'index');
+Route::get('/getIndexFileData', [MainController::class,'getIndexFileData']);
+Route::view('/manageData',"allData");
+Route::get('/getTableData',[MainController::class,'getTableData'])->name('getTableData');
+Route::get('/showSourceData',[MainController::class,'showSourceData']);
+Route::get('/getSourceDataForGrid/{sourceName}',[MainController::class,'getSourceDataForGrid']);
+
