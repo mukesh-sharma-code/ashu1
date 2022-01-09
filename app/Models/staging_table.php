@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class staging_table extends Model
+class Staging_Table extends Model
 {
     use HasFactory;
     protected $table = "staging_table";
