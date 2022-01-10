@@ -458,7 +458,7 @@
                   data: xAxisData,
                   options: salesTopOptions
               });
-              $(".performance-line-legend").html(salesTop.generateLegend());
+              document.getElementById('performance-line-legend').innerHTML = salesTop.generateLegend();
               }
             })
           };
