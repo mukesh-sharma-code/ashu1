@@ -8,6 +8,10 @@ use Log;
 use Illuminate\Http\Request;
 use App\Models\staging_table;
 use DB;
+use PDO;
+use DateTime;
+use DateInterval;
+use DatePeriod;
 
 class MainController extends Controller
 {
@@ -114,6 +118,38 @@ class MainController extends Controller
         }
     }
     public function getIndexFileData(REQUEST $req){
+        $begin = new DateTime($req->fromDate);
+        $end = new DateTime($req->toDate);
+    
+        $interval = new DateInterval('P1D'); // 1 Day
+        $dateRange = new DatePeriod($begin, $interval, $end);
+    
+        $range = [];
+        foreach ($dateRange as $date) {
+            $range[] = $date->format("Y-m-d");
+        }
+        if(empty($range)){
+            array_push($range,$req->fromDate,$req->toDate);
+            
+        }
+        $graphTmpData = DB::select("SELECT Date, Price,Source FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$req->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$req->toDate."'");
+        $graphDataOnDateArr = [];
+        $graphDataOnSourceArr = [];
+        $graphSourcePriceArr = [];
+        $graphDateArr = [];
+        foreach($graphTmpData as $stdClass){
+            if(!in_array($stdClass->Date,$graphDateArr)){
+                array_push($graphDateArr,$stdClass->Date);
+            }  
+            $source = str_replace(' ', '_', $stdClass->Source);
+            if(!array_key_exists($source,$graphSourcePriceArr)){
+                $graphSourcePriceArr[$source] = [];
+            }  
+            if($stdClass->Price != ""){
+                array_push($graphSourcePriceArr[$source],$stdClass->Price);
+            }
+        }    
+        $graphDateArr = $range;
         $companyNameArr = [];
         $companyNameArrTmp = Staging_Table::select(DB::raw("Source"))->groupBy('Source')->orderBy('Source','asc')->get()->toArray();
         foreach($companyNameArrTmp as $value){
@@ -136,6 +172,8 @@ class MainController extends Controller
         }
         ksort($companyDataArr);
         $response['dataArr1'] = $companyDataArr;
+        $response['graphDateArr'] = $graphDateArr;
+        $response['graphSourcePriceArr'] = $graphSourcePriceArr;
         return json_encode($response);
     }
 

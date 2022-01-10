@@ -216,19 +216,19 @@
                       </div>
                     </div> 
                     <div class="row">
-                      <div class="col-lg-8 d-flex flex-column">
+                      <div class="col-lg-12 d-flex flex-column">
                         <div class="row flex-grow">
-                          <div class="col-12 col-lg-4 col-lg-12 grid-margin stretch-card">
+                          <div class="col-12 col-lg-12 col-lg-12 grid-margin stretch-card">
                             <div class="card card-rounded">
                               <div class="card-body">
                                 <div class="d-sm-flex justify-content-between align-items-start">
                                   <div>
-                                   <h4 class="card-title card-title-dash">Performance Line Chart</h4>
-                                   <h5 class="card-subtitle card-subtitle-dash">Lorem Ipsum is simply dummy text of the printing</h5>
+                                   <h4 class="card-title card-title-dash">Earnings Chart</h4>
+                                   
                                   </div>
-                                  <div id="performance-line-legend"></div>
+                                  <div id="performance-line-legend" style="margin-right:100px"></div>
                                 </div>
-                                <div class="chartjs-wrapper mt-5">
+                                <div class="chartjs-wrapper mt-5" style="height:250px !important">
                                   <canvas id="performaneLine"></canvas>
                                 </div>
                               </div>
@@ -252,6 +252,7 @@
           </div>
         </div>
         <script>
+          var graphDateArr = "";
           var today = new Date();
           var dd = String(today.getDate()).padStart(2, '0');
           var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -259,65 +260,24 @@
           today = yyyy + '/' + mm + '/' + dd;
           var startDate = endDate = today;
           // console.log(startDate+ " " + endDate)
-          $(function() {
-                $('#indexPageDateRange').daterangepicker({
-                    opens: 'left',
-                    locale: {
-                        format: 'YYYY/MM/DD'
-                    }
-                }, function(start, end, label) {
-                    // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
-                     startDate = start.format('YYYY/MM/DD');
-                     endDate = end.format('YYYY/MM/DD');
-                    $('.yajra-datatable').DataTable().destroy();
-                    // console.log(startDate+ " " + endDate)
-                    getData(startDate, endDate);
-                });
-                $("#indexPageDateRange").data('daterangepicker').setStartDate(today);
-                $("#indexPageDateRange").data('daterangepicker').setEndDate(today);
-                getData();
-            var amazonDataForChart = [];
-            if ($("#performaneLine").length) {
+          if ($("#performaneLine").length) {
               var graphGradient = document.getElementById("performaneLine").getContext('2d');
               var graphGradient2 = document.getElementById("performaneLine").getContext('2d');
+              var graphGradient3 = document.getElementById("performaneLine").getContext('2d');
+              var graphGradient4 = document.getElementById("performaneLine").getContext('2d');
               var saleGradientBg = graphGradient.createLinearGradient(5, 0, 5, 100);
-              saleGradientBg.addColorStop(0, 'rgba(26, 115, 232, 0.18)');
-              saleGradientBg.addColorStop(1, 'rgba(26, 115, 232, 0.02)');
+              saleGradientBg.addColorStop(0, '#3a54ba1c');
+              saleGradientBg.addColorStop(1, '#3a54ba1c');
               var saleGradientBg2 = graphGradient2.createLinearGradient(100, 0, 50, 150);
-              saleGradientBg2.addColorStop(0, 'rgba(0, 208, 255, 0.19)');
-              saleGradientBg2.addColorStop(1, 'rgba(0, 208, 255, 0.03)');
-              var salesTopData = {
-                  labels: ["SUN","sun", "MON", "mon", "TUE","tue", "WED", "wed", "THU", "thu", "FRI", "fri", "SAT"],
-                  datasets: [{
-                      label: 'This week',
-                      data: [50, 110, 60, 290, 200, 115, 130, 170, 700,2000],
-                      backgroundColor: saleGradientBg,
-                      borderColor: [
-                          '#1F3BB3',
-                      ],
-                      borderWidth: 1.5,
-                      fill: true, // 3: no fill
-                      pointBorderWidth: 1,
-                      pointRadius: [4, 4, 4, 4, 4,4, 4, 4, 4, 4,4, 4, 4],
-                      pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
-                      pointBackgroundColor: ['#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)'],
-                      pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
-                  },{
-                    label: 'Last week',
-                    data: [30, 150],
-                    backgroundColor: saleGradientBg2,
-                    borderColor: [
-                        '#52CDFF',
-                    ],
-                    borderWidth: 1.5,
-                    fill: true, // 3: no fill
-                    pointBorderWidth: 1,
-                    pointRadius: [0, 0, 0, 4, 0],
-                    pointHoverRadius: [0, 0, 0, 2, 0],
-                    pointBackgroundColor: ['#52CDFF)', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF)', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF)', '#52CDFF', '#52CDFF', '#52CDFF','#52CDFF)'],
-                      pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
-                }]
-              };
+              saleGradientBg2.addColorStop(0, '#a6e88f30');
+              saleGradientBg2.addColorStop(1, '#a6e88f30');
+              var saleGradientBg3 = graphGradient3.createLinearGradient(100, 0, 50, 150);
+              saleGradientBg3.addColorStop(0, '#e8b95f3b');
+              saleGradientBg3.addColorStop(1, '#e8b95f3b');
+              var saleGradientBg4 = graphGradient3.createLinearGradient(100, 0, 50, 150);
+              saleGradientBg4.addColorStop(0, '#e88f8f4a');
+              saleGradientBg4.addColorStop(1, '#e88f8f4a');
+              
           
               var salesTopOptions = {
                 responsive: true,
@@ -333,7 +293,7 @@
                           ticks: {
                             beginAtZero: false,
                             autoSkip: true,
-                            maxTicksLimit: 10,
+                            maxTicksLimit: 8,
                             fontSize: 10,
                             color:"#6B778C"
                           }
@@ -376,13 +336,28 @@
                       backgroundColor: 'rgba(31, 59, 179, 1)',
                   }
               }
-              var salesTop = new Chart(graphGradient, {
-                  type: 'line',
-                  data: salesTopData,
-                  options: salesTopOptions
-              });
-              document.getElementById('performance-line-legend').innerHTML = salesTop.generateLegend();
+              
+              
             }
+          $(function() {
+                $('#indexPageDateRange').daterangepicker({
+                    opens: 'left',
+                    locale: {
+                        format: 'YYYY/MM/DD'
+                    }
+                }, function(start, end, label) {
+                    // console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                     startDate = start.format('YYYY/MM/DD');
+                     endDate = end.format('YYYY/MM/DD');
+                    $('.yajra-datatable').DataTable().destroy();
+                    // console.log(startDate+ " " + endDate)
+                    getData(startDate, endDate);
+                });
+                $("#indexPageDateRange").data('daterangepicker').setStartDate(today);
+                $("#indexPageDateRange").data('daterangepicker').setEndDate(today);
+                getData();
+            var amazonDataForChart = [];
+            
             $('#refresh').click(function() {
               $('#from_date').val('');
               $("#indexPageDateRange").data('daterangepicker').setStartDate(today);
@@ -400,6 +375,10 @@
               },
               success: function(response){
                 response = JSON.parse(response)
+                // graphDateArr = Object.assign({},response.graphDateArr);
+                graphDateArr = response.graphDateArr;
+                graphSourcePriceArr = response.graphSourcePriceArr;
+                // graphDateArr = graphDateArr.split(',')
                 var statisticsLblHtml = "";
                 if(response.dataArr1.length != 0){
                   $.each(response.dataArr1,function(index,value){
@@ -408,6 +387,78 @@
                   })
                 }
                 $(".statistics-details").html(statisticsLblHtml);
+                
+                var xAxisData = {
+                  labels: graphDateArr,
+                  datasets: [
+                    {
+                      label: 'Amazon',
+                      data: graphSourcePriceArr.Amazon,
+                      backgroundColor: saleGradientBg,
+                      borderColor: [
+                          '#1F3BB3',
+                      ],
+                      borderWidth: 1.5,
+                      fill: true, // 3: no fill
+                      pointBorderWidth: 1,
+                      pointRadius: [4, 4, 4, 4, 4,4, 4, 4, 4, 4,4, 4, 4],
+                      pointHoverRadius: [2, 2, 2, 2, 2,2, 2, 2, 2, 2,2, 2, 2],
+                      pointBackgroundColor: ['#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)', '#1F3BB3', '#1F3BB3', '#1F3BB3','#1F3BB3)'],
+                      pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
+                    }
+                    ,{
+                      label: 'HomeDepot',
+                      data: graphSourcePriceArr.Home_Depot,
+                      backgroundColor: saleGradientBg2,
+                      borderColor: [
+                          '#31c531',
+                      ],
+                      borderWidth: 1.5,
+                      fill: true, // 3: no fill
+                      pointBorderWidth: 1,
+                      pointRadius: [0, 0, 0, 4, 0],
+                      pointHoverRadius: [0, 0, 0, 2, 0],
+                      pointBackgroundColor: ['#31c531)', '#31c531', '#31c531', '#31c531','#31c531)', '#31c531', '#31c531', '#31c531','#31c531)', '#31c531', '#31c531', '#31c531','#31c531)'],
+                      pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
+                    }
+                    ,{
+                      label: 'Payoneer',
+                      data: graphSourcePriceArr.Payoneer,
+                      backgroundColor: saleGradientBg3,
+                      borderColor: [
+                          '#eeac65',
+                      ],
+                      borderWidth: 1.5,
+                      fill: true, // 3: no fill
+                      pointBorderWidth: 1,
+                      pointRadius: [0, 0, 0, 4, 0],
+                      pointHoverRadius: [0, 0, 0, 2, 0],
+                      pointBackgroundColor: ['#eeac65)', '#eeac65', '#eeac65', '#eeac65','#eeac65)', '#eeac65', '#eeac65', '#eeac65','#eeac65)', '#eeac65', '#eeac65', '#eeac65','#eeac65)'],
+                      pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
+                    },
+                    {
+                      label: 'Walmart',
+                      data: graphSourcePriceArr.Walmart,
+                      backgroundColor: saleGradientBg2,
+                      borderColor: [
+                          'red',
+                      ],
+                      borderWidth: 1.5,
+                      fill: true, // 3: no fill
+                      pointBorderWidth: 1,
+                      pointRadius: [0, 0, 0, 4, 0],
+                      pointHoverRadius: [0, 0, 0, 2, 0],
+                      pointBackgroundColor: ['red)', 'red', 'red', 'red','red)', 'red', 'red', 'red','red)', 'red', 'red', 'red','red)'],
+                      pointBorderColor: ['#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff','#fff',],
+                    }
+                  ]
+              };
+                var salesTop = new Chart(graphGradient, {
+                  type: 'line',
+                  data: xAxisData,
+                  options: salesTopOptions
+              });
+              document.getElementById('performance-line-legend').innerHTML = salesTop.generateLegend();
               }
             })
           };
