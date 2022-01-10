@@ -197,7 +197,7 @@
                   </ul>
                   <div>
                     <div class="btn-wrapper">
-                      <a href="#" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>
+                      <a href="javascript:window.print()" class="btn btn-otline-dark"><i class="icon-printer"></i> Print</a>
                     </div>
                   </div>
                 </div>

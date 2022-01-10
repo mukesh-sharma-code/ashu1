@@ -84,7 +84,9 @@
             
         </div>
         <br>
-        <h3 style="display:inline-block;background:white;border-radius:4px;padding:5px 10px;box-shadow:6px 6px 10px #898990">{{$source}}</h3>
+       
+            
+        <h4 style="display:inline-block;background:white;border-radius:4px;padding:10px 20px;box-shadow:6px 6px 10px #898990">{{$source}}</h4>
         <br>
         <table class="table table-bordered yajra-datatable mt-5 cell-border word-wrap">
             <thead>
@@ -95,6 +97,7 @@
                     <th>Email</th>
                     <th>Mail Date</th>
                     <th>Order Id</th>
+                    <th>Order Date</th>
                     <th>Subtotal</th>
                     <th>Discount</th>
                     <th>Price</th>
@@ -112,6 +115,69 @@
 
 <!-- page-body-wrapper ends -->
 <script type="text/javascript">
+    var source = "{{$source}}"
+    var arr = [];
+    if(source == "Payoneer"){
+        arr = {
+            "Item" : false,
+            "Name" : true,
+            "To" : true,
+            "Email" : false,
+            "Date" : true,
+            "OrderID" : false,
+            "OrderDate" : false,
+            "Subtotal" : false,
+            "Discount" : false,
+            "Price" : true,
+            "Earning" : false,
+        };
+    }else if(source == "Walmart"){
+        arr = {
+            "Item" : false,
+            "Name" : true,
+            "To" : false,
+            "Email" : false,
+            "Date" : true,
+            "OrderId" : true,
+            "OrderDate" : false,
+            "Subtotal" : false,
+            "Discount" : false,
+            "Price" : true,
+            "Earning" : false,
+            
+        };
+    }else if(source == "Home Depot"){
+        arr = {
+            "Item" : false,
+            "Name" : false,
+            "To" : false,
+            "Email" : false,
+            "Date" : true,
+            "OrderID" : true,
+            "OrderDate" : false,
+            "Subtotal" : true,
+            "Discount" : true,
+            "Price" : true,
+            "Earning" : false,
+        };
+    }
+    else if(source == "Amazon"){
+        arr = {
+            "Item" : true,
+            "Name" : false,
+            "To" : false,
+            "Email" : true,
+            "Date" : true,
+            "OrderID" : false,
+            "OrderDate" : true,
+            "Subtotal" : false,
+            "Discount" : false,
+            "Price" : true,
+            "Earning" : true
+
+        };
+    }
+    console.log("{{$source}}")
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -242,46 +308,61 @@
                 {
                     data: 'Item',
                     name: 'Item',
-                    width: 10
+                    width: 10,
+                    visible: arr.Item
                 },
                 {
                     data: 'Name',
                     name: 'Name',
-                    width: 10
+                    width: 10,
+                    visible: arr.Name
                 },
                 {
                     data: 'To',
                     name: 'To',
-                    width: '10px'
+                    width: '10px',
+                    visible: arr.To
                 },
                 {
                     data: 'Email',
-                    name: 'Email'
+                    name: 'Email',
+                    visible: arr.Email
                 },
                 {
                     data: 'Date',
                     name: 'Date',
-                    width: '10px'
+                    width: '10px',
+                    visible: arr.Date
                 },
                 {
                     data: 'OrderID',
-                    name: 'Order Id'
+                    name: 'Order Id',
+                    visible: arr.OrderID
+                },
+                {
+                    data: 'OrderDate',
+                    name: 'Order Date',
+                    visible: arr.OrderDate
                 },
                 {
                     data: 'Subtotal',
-                    name: 'Subtotal'
+                    name: 'Subtotal',
+                    visible: arr.Subtotal
                 },
                 {
                     data: 'Discount',
-                    name: 'Discount'
+                    name: 'Discount',
+                    visible: arr.Discount
                 },
                 {
                     data: 'Price',
-                    name: 'Price'
+                    name: 'Price',
+                    visible: arr.Price
                 },
                 {
                     data: 'Earning',
-                    name: 'Earning'
+                    name: 'Earning',
+                    visible: arr.Earning
                 }
                 
             ]
