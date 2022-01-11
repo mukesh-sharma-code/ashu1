@@ -58,6 +58,23 @@
         white-space: break-spaces !important;
         line-height: 16px !important;
     }
+    .dataBySubjectCards{
+        
+        margin: 10px 0;
+        background:white;
+        /* box-shadow:inset 0 0 8px #000000; */
+        border-radius: 4px;
+        border: 1px dashed #928fad;
+        box-shadow: 13px 12px 11px #928fad;
+    }
+    .subjectDiv{
+        font-weight: bold;
+        border-bottom:1px solid #d3d3da;
+        padding: 5px 30px;
+    }
+    .sumPriceDiv{
+        padding: 15px 30px;
+    }
 </style>
 <!-- partial:partials/_navbar.html -->
 <!-- partial -->
@@ -82,13 +99,20 @@
                 <button type="button" name="refresh" id="refresh" class="cusBtn">Refresh</button>
             </div> -->
             <div class="col-md-6">
-                <h4 style="display:inline-block;background:white;border-radius:4px;padding:10px 20px;box-shadow:6px 6px 10px #898990">{{$source}}</h4>
+                <h4 style="display:inline-block;background:white;border-radius:0px 10px 10px 0px;padding:10px 20px;background: linear-gradient(45deg, #37267b, #c5c5e8);;color: white;">{{$source}}</h4>
             </div>
+            
         </div>
-       
+       <div class="row mt-5">
+            <div class="col-md-12 ">
+                <div id="dataBySubjectDiv" class="d-flex flex-wrap justify-content-between">
+
+                </div>
+            </div>
+       </div>
             
         <br>
-        <table class="table table-bordered yajra-datatable mt-5 cell-border word-wrap">
+        <!-- <table class="table table-bordered yajra-datatable mt-5 cell-border word-wrap">
             <thead>
                 <tr>
                     <th>Item</th>
@@ -106,7 +130,7 @@
             </thead>
             <tbody>
             </tbody>
-        </table>
+        </table> -->
 
     </div>
 </div>
@@ -236,7 +260,26 @@
         
         // loadData();
     });
-    const loadData = (fromDate = today, toDate = today) => {
+    
+    function loadData(fromDate = today, toDate = today){
+        $.ajax({
+            url: '/getSourceDataForGrid/{{ $source }}',
+            data: {
+                fromDate: fromDate,
+                toDate: toDate
+            },
+            success: function(response){
+                html = ""
+                $.each(response,function(index,value){
+                    var Subject = value.Subject;
+                    var SumPrice = typeof value.SumPrice == 'undefined' ? 0 : value.SumPrice;
+                    html += `<div class='dataBySubjectCards' ><div class='subjectDiv'>${Subject}</div><div class="sumPriceDiv">${SumPrice}</div></div>`
+                })
+                $("#dataBySubjectDiv").html(html);
+            }
+        });
+    }
+    const loadData_ = (fromDate = today, toDate = today) => {
         var table = $('.yajra-datatable').DataTable({
             processing: true,
             // serverSide: true,

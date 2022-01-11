@@ -78,40 +78,51 @@ class MainController extends Controller
     public function getSourceDataForGrid(Request $request,$source){
         try{
             if ($request->ajax()) {
-                $fromDate = null;
-                $toDate = null;
-                if($request->fromDate != null){
-                    $str = strtotime($request->fromDate);
-                    $fromDate = date('m/d/Y',$str);
-                }
-                if($request->toDate != null){
-                    $str = strtotime($request->toDate);
-                    $toDate = date('m/d/Y',$str);
-                }
-                $query = Staging_Table::where('Source','like', $source);
-                if($fromDate != null && $toDate != null){
-                    $query->whereBetween('date',array($fromDate,$toDate));
-                }else{
-                    if($fromDate != null){
-                        $query->where('date','=',$fromDate);    
-                    }
-                    if($toDate != null){
-                        $query->where('date','=',$toDate);    
-                    }
-                }
-                $data = $query->get();
+                // $fromDate = null;
+                // $toDate = null;
+                // if($request->fromDate != null){
+                //     $str = strtotime($request->fromDate);
+                //     $fromDate = date('m/d/Y',$str);
+                // }
+                // if($request->toDate != null){
+                //     $str = strtotime($request->toDate);
+                //     $toDate = date('m/d/Y',$str);
+                // }
 
-                
-               //  $finalData = []; 
-               //  foreach($data as $obj){
-               //      $obj->isprocessed = $obj->isprocessed == 1 ? 'Yes' : " No";
-               //      $obj->isfiledownloaded = $obj->isfiledownloaded == 1 ? 'Yes' : " No";
-               //      array_push($finalData,$obj);
-               //  }
-                return DataTables::of($data)
-                    ->addIndexColumn()
+                // old code
+                // $query = Staging_Table::where('Source','like', $source);
+                // if($fromDate != null && $toDate != null){
+                //     $query->whereBetween('date',array($fromDate,$toDate));
+                // }else{
+                //     if($fromDate != null){
+                //         $query->where('date','=',$fromDate);    
+                //     }
+                //     if($toDate != null){
+                //         $query->where('date','=',$toDate);    
+                //     }
+                // }
+                // if($source == "Amazon"){
+                //     $query->where('Subject','like',"%Sold, ship now%"); 
+                // }elseif($source == "Home Depot"){
+                //     $query->where('Subject','like',"%We received your order!%"); 
+                // }elseif($source == "Walmart"){
+                //     $query->where('Subject','like',"%OOM, thanks for your order%"); 
+                // }elseif($source == "Payoneer"){
+                //     $query->where('Subject','like',"%You Have Received a Payment!%"); 
+                // }
+                // $data = $query->get();
+                // return DataTables::of($data)
+                //     ->addIndexColumn()
                     
-                    ->make(true);
+                //     ->make(true);
+
+                // new code
+                $data = DB::select("SELECT Sum(Price) SumPrice, Subject FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND Source LIKE '".$source."' GROUP BY Subject");
+                if(!count($data)){
+                    $data = DB::select("SELECT Subject FROM `staging_table` where Source LIKE '".$source."' GROUP BY Subject");
+                }
+                return $data;
+
             }
         }catch(Exception $e){
             Log::error($e->getMessage());
