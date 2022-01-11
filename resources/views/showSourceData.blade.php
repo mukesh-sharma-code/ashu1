@@ -105,7 +105,7 @@
         </div>
        <div class="row mt-5">
             <div class="col-md-12 ">
-                <div id="dataBySubjectDiv" class="d-flex flex-wrap justify-content-between">
+                <div id="dataBySubjectDiv" class="d-flex flex-wrap">
 
                 </div>
             </div>
@@ -273,7 +273,7 @@
                 $.each(response,function(index,value){
                     var Subject = value.Subject;
                     var SumPrice = typeof value.SumPrice == 'undefined' ? 0 : value.SumPrice;
-                    html += `<div class='dataBySubjectCards' ><div class='subjectDiv'>${Subject}</div><div class="sumPriceDiv">${SumPrice}</div></div>`
+                    html += `<div class='dataBySubjectCards' style="margin-right:40px" ><div class='subjectDiv'>${Subject}</div><div class="sumPriceDiv">${SumPrice}</div></div>`
                 })
                 $("#dataBySubjectDiv").html(html);
             }
