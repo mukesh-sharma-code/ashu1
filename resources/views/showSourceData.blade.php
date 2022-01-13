@@ -59,21 +59,48 @@
         line-height: 16px !important;
     }
     .dataBySubjectCards{
-        
+        min-height: 147px;
         margin: 10px 0;
         background:white;
         /* box-shadow:inset 0 0 8px #000000; */
-        border-radius: 4px;
-        border: 1px dashed #928fad;
+        border-radius: 0px 0px 12px 12px;
+        /* border: 1px dashed #928fad; */
         box-shadow: 13px 12px 11px #928fad;
+        color: white;
+        min-width: 300px;
     }
     .subjectDiv{
         font-weight: bold;
-        border-bottom:1px solid #d3d3da;
+        /* border-bottom:1px solid #d3d3da; */
         padding: 5px 30px;
+        background-color: #00000061;
+        text-align: center;
+        cursor: pointer;
     }
     .sumPriceDiv{
-        padding: 15px 30px;
+        background-color: #00000061;;
+        border-radius: 5px;
+        min-height: 44px;
+        min-width: 49px;
+        max-width: 200px;
+        overflow-wrap: anywhere;
+        padding: 6px;
+    }
+    .sumPriceParentDiv{
+        display: flex;
+        align-items: center;  
+        justify-content: space-between;  
+        padding:10px;
+        margin-top: 20px;
+    }
+    .sumPriceParentDiv div{
+        display: flex;
+        justify-content: center;
+        font-size: 24px;
+        font-weight: bold;
+        
+        align-items: center;
+
     }
 </style>
 <!-- partial:partials/_navbar.html -->
@@ -99,7 +126,7 @@
                 <button type="button" name="refresh" id="refresh" class="cusBtn">Refresh</button>
             </div> -->
             <div class="col-md-6">
-                <h4 style="display:inline-block;background:white;border-radius:0px 10px 10px 0px;padding:10px 20px;background: linear-gradient(45deg, #37267b, #c5c5e8);;color: white;">{{$source}}</h4>
+                <h4 style="display:inline-block;background:white;border-radius:0px 0px 12px 12px;padding:10px 20px;background: linear-gradient(45deg, #37267b, #c5c5e8);;color: white;">{{$source}}</h4>
             </div>
             
         </div>
@@ -259,7 +286,16 @@
         });
         
         // loadData();
+       
     });
+    function createRandomColor(){
+        const hexParts = '0123456789ABCDEF'
+        let color = "#"
+        for(let i = 0; i < 6; i++){
+            color += hexParts[Math.floor(Math.random() * 10)]
+        }
+        return color;
+    }
     
     function loadData(fromDate = today, toDate = today){
         $.ajax({
@@ -272,8 +308,13 @@
                 html = ""
                 $.each(response,function(index,value){
                     var Subject = value.Subject;
+                    var SubSubject = Subject
                     var SumPrice = typeof value.SumPrice == 'undefined' ? 0 : value.SumPrice;
-                    html += `<div class='dataBySubjectCards' style="margin-right:40px" ><div class='subjectDiv'>${Subject}</div><div class="sumPriceDiv">${SumPrice}</div></div>`
+                    if(Subject.length > 21){
+                        SubSubject = Subject.substring(0,22) + "..."
+                    }
+                    var randomColor = createRandomColor()
+                    html += `<div class='dataBySubjectCards' title='${Subject}' style="margin-right:40px; background:${randomColor};background:linear-gradient(45deg, ${randomColor}, #32040400);};box-shadow: 13px 12px 11px ${randomColor};" ><div class='subjectDiv'>${SubSubject}</div><div class="sumPriceParentDiv"><div class="sumPriceDiv">${SumPrice}</div><div class="iconDiv"><i class="mdi mdi-poll-box" style='font-size:40px'></i></div></div></div>`
                 })
                 $("#dataBySubjectDiv").html(html);
             }
