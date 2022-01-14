@@ -62,7 +62,7 @@
         display:flex;
         justify-content: space-between;
         flex-direction:column;
-        min-height: 180px;
+      
         margin: 10px 0;
         background:white;
         /* box-shadow:inset 0 0 8px #000000; */
