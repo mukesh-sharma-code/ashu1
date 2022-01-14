@@ -59,7 +59,10 @@
         line-height: 16px !important;
     }
     .dataBySubjectCards{
-        min-height: 147px;
+        display:flex;
+        justify-content: space-between;
+        flex-direction:column;
+        min-height: 180px;
         margin: 10px 0;
         background:white;
         /* box-shadow:inset 0 0 8px #000000; */
@@ -67,7 +70,7 @@
         /* border: 1px dashed #928fad; */
         box-shadow: 13px 12px 11px #928fad;
         color: white;
-        min-width: 300px;
+        width: 360px;
     }
     .subjectDiv{
         font-weight: bold;
@@ -89,9 +92,11 @@
     .sumPriceParentDiv{
         display: flex;
         align-items: center;  
+       
         justify-content: space-between;  
-        padding:10px;
+        padding:26px;
         margin-top: 20px;
+        /* margin-bottom:10px */
     }
     .sumPriceParentDiv div{
         display: flex;
@@ -310,9 +315,9 @@
                     var Subject = value.Subject;
                     var SubSubject = Subject
                     var SumPrice = typeof value.SumPrice == 'undefined' ? 0 : value.SumPrice;
-                    if(Subject.length > 21){
-                        SubSubject = Subject.substring(0,22) + "..."
-                    }
+                    // if(Subject.length > 21){
+                    //     SubSubject = Subject.substring(0,22) + "..."
+                    // }
                     var randomColor = createRandomColor()
                     html += `<div class='dataBySubjectCards' title='${Subject}' style="margin-right:40px; background:${randomColor};background:linear-gradient(45deg, ${randomColor}, #32040400);};box-shadow: 13px 12px 11px ${randomColor};" ><div class='subjectDiv'>${SubSubject}</div><div class="sumPriceParentDiv"><div class="sumPriceDiv">${SumPrice}</div><div class="iconDiv"><i class="mdi mdi-poll-box" style='font-size:40px'></i></div></div></div>`
                 })
