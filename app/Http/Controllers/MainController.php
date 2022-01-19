@@ -6,7 +6,7 @@ use DataTables;
 use Exception;
 use Log;
 use Illuminate\Http\Request;
-use App\Models\staging_table;
+use App\Models\Staging_Table;
 use DB;
 use PDO;
 use DateTime;
@@ -18,7 +18,7 @@ class MainController extends Controller
    public function index(){
         $dataArr = Staging_Table::select(DB::raw("Source,SUM(Price) as TotalPrice"))->groupBy('Source')->get();
         
-        $dataArr = DB::select("SELECT Source,SUM(Price) as TotalPrice FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".date('m/d/Y')."' AND str_to_date(`Date`, '%m/%d/%YYYY') <= '".date('m/d/Y')."' Group By Source");
+        $dataArr = DB::select("SELECT Source,SUM(Price) as TotalPrice FROM `Staging_Table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".date('m/d/Y')."' AND str_to_date(`Date`, '%m/%d/%YYYY') <= '".date('m/d/Y')."' Group By Source");
         if(!count($dataArr)){
             $tmpDataArr = Staging_Table::select(DB::raw("Source"))->groupBy('Source')->get();
             foreach($tmpDataArr as $arr){
@@ -117,11 +117,11 @@ class MainController extends Controller
                 //     ->make(true);
 
                 // new code
-                // $data = DB::select("SELECT Sum(Price) SumPrice, SUM(Claim) SumClaim, SUM(Total_Refund) SumTotalRefund, `Subject` FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND Source LIKE '".$source."' GROUP BY Subject");
+                // $data = DB::select("SELECT Sum(Price) SumPrice, SUM(Claim) SumClaim, SUM(Total_Refund) SumTotalRefund, `Subject` FROM `Staging_Table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND Source LIKE '".$source."' GROUP BY Subject");
                 $data2 = [];
-                $data = DB::select("SELECT Sum(Price) SumPrice, SUM(Claim) SumClaim, SUM(Total_Refund) SumTotalRefund, `Subject` FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND `Source` LIKE '".$source."' GROUP BY Subject");
+                $data = DB::select("SELECT Sum(Price) SumPrice, SUM(Claim) SumClaim, SUM(Total_Refund) SumTotalRefund, `Subject` FROM `Staging_Table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND `Source` LIKE '".$source."' GROUP BY Subject");
                 if(!count($data)){
-                    $data = DB::select("SELECT Subject FROM `staging_table` where Source LIKE '".$source."' GROUP BY Subject");
+                    $data = DB::select("SELECT Subject FROM `Staging_Table` where Source LIKE '".$source."' GROUP BY Subject");
                 }
                     foreach($data as $stdCls){
                         if($stdCls->Subject == 'Sold, ship now:'){
@@ -189,7 +189,7 @@ class MainController extends Controller
             array_push($range,$req->fromDate,$req->toDate);
             
         }
-        $graphTmpData = DB::select("SELECT Date, Price,Source FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$req->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$req->toDate."'");
+        $graphTmpData = DB::select("SELECT Date, Price,Source FROM `Staging_Table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$req->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$req->toDate."'");
         $graphDataOnDateArr = [];
         $graphDataOnSourceArr = [];
         $graphSourcePriceArr = [];
@@ -212,7 +212,7 @@ class MainController extends Controller
         foreach($companyNameArrTmp as $value){
             array_push($companyNameArr,$value['Source']);
         }
-        $companyDataArrTmp = DB::select("SELECT Source,ROUND(SUM(Price),2) as TotalPrice FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$req->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') <= '".$req->toDate."' Group By Source Order By Source asc");
+        $companyDataArrTmp = DB::select("SELECT Source,ROUND(SUM(Price),2) as TotalPrice FROM `Staging_Table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$req->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') <= '".$req->toDate."' Group By Source Order By Source asc");
         $companyDataArrTmp = array_map(function ($value) {
             return (array)$value;
         }, $companyDataArrTmp); 
@@ -220,7 +220,7 @@ class MainController extends Controller
         foreach($companyDataArrTmp as $valueArr){
             $companyDataArr[$valueArr['Source']] = $valueArr;
         }
-        $dataArr2 = DB::select("SELECT Source,Price,Date FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$req->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') <= '".$req->toDate."'");
+        $dataArr2 = DB::select("SELECT Source,Price,Date FROM `Staging_Table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$req->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') <= '".$req->toDate."'");
         $dataArr1 = [];
         foreach($companyNameArr as $companyName){
             if(!array_key_exists($companyName,$companyDataArr)){

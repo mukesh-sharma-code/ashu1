@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Staging_Table extends Model
 {
     use HasFactory;
-    protected $table = "staging_table";
+    protected $table = "Staging_Table";
     protected $fillable = [
         'Source',
         'Subject',
