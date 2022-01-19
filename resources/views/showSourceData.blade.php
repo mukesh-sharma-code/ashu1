@@ -319,7 +319,7 @@
                     //     SubSubject = Subject.substring(0,22) + "..."
                     // }
                     var randomColor = createRandomColor()
-                    html += `<div class='dataBySubjectCards' title='${Subject}' style="margin-right:40px; background:${randomColor};background:linear-gradient(45deg, ${randomColor}, #32040400);};box-shadow: 13px 12px 11px ${randomColor};" ><div class='subjectDiv'>${SubSubject}</div><div class="sumPriceParentDiv"><div class="sumPriceDiv">${Value}</div><div class="iconDiv"><i class="mdi mdi-poll-box" style='font-size:40px'></i></div></div></div>`
+                    html += `<div class='dataBySubjectCards' title='${Subject}' style="margin-right:40px; background:${randomColor};background:linear-gradient(45deg, ${randomColor}, #32040400);};box-shadow: 13px 12px 11px ${randomColor};" ><div class='subjectDiv'>${SubSubject}</div><div class="sumPriceParentDiv"><div class="sumPriceDiv">$${Value}</div><div class="iconDiv"><i class="mdi mdi-poll-box" style='font-size:40px'></i></div></div></div>`
                 })
                 $("#dataBySubjectDiv").html(html);
             }
