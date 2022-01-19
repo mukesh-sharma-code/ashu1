@@ -117,11 +117,57 @@ class MainController extends Controller
                 //     ->make(true);
 
                 // new code
-                $data = DB::select("SELECT Sum(Price) SumPrice, Subject FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND Source LIKE '".$source."' GROUP BY Subject");
+                // $data = DB::select("SELECT Sum(Price) SumPrice, SUM(Claim) SumClaim, SUM(Total_Refund) SumTotalRefund, `Subject` FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND Source LIKE '".$source."' GROUP BY Subject");
+                $data2 = [];
+                $data = DB::select("SELECT Sum(Price) SumPrice, SUM(Claim) SumClaim, SUM(Total_Refund) SumTotalRefund, `Subject` FROM `staging_table` where str_to_date(`Date`, '%m/%d/%YYYY') >= '".$request->fromDate."' AND str_to_date(`Date`, '%m/%d/%YYYY') < '".$request->toDate."' AND `Source` LIKE '".$source."' GROUP BY Subject");
                 if(!count($data)){
                     $data = DB::select("SELECT Subject FROM `staging_table` where Source LIKE '".$source."' GROUP BY Subject");
                 }
-                return $data;
+                    foreach($data as $stdCls){
+                        if($stdCls->Subject == 'Sold, ship now:'){
+                            $obj = (object) array(
+                                'Subject' => $stdCls->Subject,
+                                'Value' => isset($stdCls->SumPrice) ? $stdCls->SumPrice : 0 
+                            );
+                        }elseif($stdCls->Subject == 'We received your order!'){
+                            $obj = (object) array(
+                                'Subject' => $stdCls->Subject,
+                                'Value' => isset($stdCls->SumPrice) ? $stdCls->SumPrice : 0 
+                            );
+                        }elseif($stdCls->Subject == 'You\'ve received an eStore Credit to The Home Depot'){
+                            $obj = (object) array(
+                                'Subject' => $stdCls->Subject,
+                                'Value' => isset($stdCls->SumPrice) ? $stdCls->SumPrice : 0 
+                            );
+                        }elseif($stdCls->Subject == 'Return received'){
+                            $obj = (object) array(
+                                'Subject' => $stdCls->Subject,
+                                'Value' => isset($stdCls->SumTotalRefund) ? $stdCls->SumTotalRefund : 0
+                            );
+                        }elseif($stdCls->Subject == 'You Have Received a Payment!'){
+                            $obj = (object) array(
+                                'Subject' => $stdCls->Subject,
+                                'Value' => isset($stdCls->SumPrice) ? $stdCls->SumPrice : 0 
+                            );
+                        }elseif($stdCls->Subject == 'OOM, thanks for your order'){
+                            $obj = (object) array(
+                                'Subject' => $stdCls->Subject,
+                                'Value' => isset($stdCls->SumPrice) ? $stdCls->SumPrice : 0
+                            );
+                        }elseif($stdCls->Subject == 'Claim decision on order'){
+                            continue;
+                        }elseif($stdCls->Subject == 'Your Amazon A-to-z Guarantee Claim for Order'){
+                            continue;
+                        }else{
+                            $obj = (object) array(
+                                'Subject' => $stdCls->Subject,
+                                'Value' => isset($stdCls->SumPrice) ? $stdCls->SumPrice : 0
+                            );
+                        }
+                        array_push($data2,$obj);
+                    }
+            
+                return $data2;
 
             }
         }catch(Exception $e){
